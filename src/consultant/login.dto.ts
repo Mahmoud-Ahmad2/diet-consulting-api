@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
-import { REGAX_PASSWORD } from '../common/constant';
+import { REGEX_PASSWORD } from '../common/constant';
 
 export class LoginDto {
   @IsEmail()
@@ -9,6 +9,6 @@ export class LoginDto {
   username: string;
 
   @IsNotEmpty()
-  @Matches(REGAX_PASSWORD)
+  @Matches(REGEX_PASSWORD)
   password: string;
 }
