@@ -14,7 +14,6 @@ export class QuestionService {
 
   async findAll(offset: number): Promise<Question[]> {
     return await this.questionRepository.findAll({
-      // include: Answer and return the empty array if no answer
       attributes: [
         'id',
         'question',
