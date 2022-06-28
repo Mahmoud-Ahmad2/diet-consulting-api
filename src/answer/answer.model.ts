@@ -4,6 +4,7 @@ import {
   Table,
   PrimaryKey,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Question } from 'src/question/question.model';
 
@@ -18,7 +19,16 @@ export class Answer extends Model {
   questionId: number;
 
   @Column({ type: 'TEXT', allowNull: false })
-  answer: string;
+  title: string;
+
+  @Column({ type: 'TEXT', allowNull: false })
+  description: string;
+
+  @Column({ type: 'TEXT', allowNull: false })
+  recommendations: string;
+
+  @BelongsTo(() => Question)
+  question: Question;
 
   @Column
   createdAt: Date;
