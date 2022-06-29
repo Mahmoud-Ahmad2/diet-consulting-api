@@ -2,8 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Question } from './question.model';
 import { QUESTION_REPOSITORY } from 'src/common/constant';
 import { Answer } from 'src/answer/answer.model';
-import sequelize, { where } from 'sequelize';
-import { Op } from 'sequelize';
+import sequelize from 'sequelize';
 
 @Injectable()
 export class QuestionService {
@@ -14,35 +13,33 @@ export class QuestionService {
 
   async findAll(offset: number): Promise<Question[]> {
     return await this.questionRepository.findAll({
-      attributes: [
-        'id',
-        'question',
-        [
-          sequelize.fn('COUNT', sequelize.col('answers.questionId')),
-          'answerCount',
-        ],
-      ],
+      attributes: ['id', 'question'],
       include: [
         {
           model: Answer,
           attributes: [
             'id',
-            'questionId',
-            'title',
-            'description',
-            'recommendations',
+            // 'questionId',
+            // 'title',
+            // 'description',
+            // 'recommendations',
           ],
-          duplicating: false,
+          // order: [[sequelize.fn('COUNT', sequelize.col('answers.id')), 'ASC']],
+          // duplicating: false,
           as: 'answers',
           required: false,
         },
       ],
+      order: [
+        [sequelize.fn('COUNT', sequelize.col('answers.questionId')), 'ASC'],
+      ],
       group: ['question.id', 'answers.id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('answers.id')), 'ASC']],
-      offset,
-      limit: 3,
+      subQuery: false,
+      // limit: 3,
+      // offset,
     });
   }
+
   async findOneByQuestionId(id: number): Promise<Question> {
     return await this.questionRepository.findOne({
       where: {

@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+import { Consultants } from 'src/consultant/consultant.model';
 import { Question } from 'src/question/question.model';
 
 @Table
@@ -18,6 +19,10 @@ export class Answer extends Model {
   @Column({ allowNull: false })
   questionId: number;
 
+  @ForeignKey(() => Consultants)
+  @Column({ allowNull: false })
+  consultantId: number;
+
   @Column({ type: 'TEXT', allowNull: false })
   title: string;
 
@@ -26,6 +31,9 @@ export class Answer extends Model {
 
   @Column({ type: 'TEXT', allowNull: false })
   recommendations: string;
+
+  @Column({ type: 'BOOLEAN', allowNull: false })
+  isDraft: boolean;
 
   @BelongsTo(() => Question)
   question: Question;
