@@ -1,5 +1,9 @@
 import { DATABASE_CONFIG, DATABASE_PROVIDE } from './database.constants';
-import { CONSULTANT_REPOSITORY } from './providers.constant';
+import {
+  CONSULTANT_REPOSITORY,
+  ANSWER_REPOSITORY,
+  QUESTION_REPOSITORY,
+} from './providers.constant';
 import { REGEX_PASSWORD } from './dto.constant';
 
 export {
@@ -7,4 +11,6 @@ export {
   DATABASE_PROVIDE,
   CONSULTANT_REPOSITORY,
   REGEX_PASSWORD,
+  ANSWER_REPOSITORY,
+  QUESTION_REPOSITORY,
 };

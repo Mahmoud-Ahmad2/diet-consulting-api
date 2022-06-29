@@ -1,14 +1,24 @@
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
-import { REGAX_PASSWORD } from '../common/constant';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
+import { REGEX_PASSWORD } from '../common/constant';
 
 export class LoginDto {
   @IsEmail()
-  email: string;
+  @IsOptional()
+  @IsNotEmpty()
+  inEmail: string;
 
   @IsString()
-  username: string;
+  @IsOptional()
+  @IsNotEmpty()
+  inUsername: string;
 
   @IsNotEmpty()
-  @Matches(REGAX_PASSWORD)
-  password: string;
+  @Matches(REGEX_PASSWORD)
+  inPassword: string;
 }
