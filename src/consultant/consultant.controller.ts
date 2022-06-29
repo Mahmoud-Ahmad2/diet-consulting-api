@@ -11,43 +11,32 @@ export class ConsultantController {
 
   @Post('signup')
   async insert(@Body() dto: SignupConsultantDto): Promise<object> {
-    if (
-      !dto.email ||
-      !dto.username ||
-      !dto.password ||
-      !dto.firstName ||
-      !dto.middleName ||
-      !dto.lastName
-    ) {
-      throw new HttpException('All fields are required', 400);
-    }
-
-    const email = await this.consultantService.findOneByEmail(dto.email);
-
-    const username = await this.consultantService.findOneByUsername(
+    const { email, username, password, firstName, middleName, lastName } = dto;
+    const findEmail = await this.consultantService.findOneByEmail(email);
+    const findUsername = await this.consultantService.findOneByUsername(
       dto.username,
     );
 
-    if (email && username) {
+    if (findEmail && findUsername) {
       throw new HttpException('Email and Username already exists', 400);
     }
 
-    if (email) {
+    if (findEmail) {
       throw new HttpException('Email already exists', 400);
     }
 
-    if (username) {
+    if (findUsername) {
       throw new HttpException('Username already exists', 400);
     }
 
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const data = await this.consultantService.insert(
-      dto.email,
+      email,
       hashedPassword,
-      dto.username,
-      dto.firstName,
-      dto.middleName,
-      dto.lastName,
+      username,
+      firstName,
+      middleName,
+      lastName,
     );
     return {
       message: 'User created successfully',
@@ -57,19 +46,17 @@ export class ConsultantController {
 
   @Post('login')
   async login(@Body() dto: LoginDto): Promise<object> {
-    if (!dto.username && !dto.email) {
-      throw new HttpException('Username or Email is required', 400);
-    }
-
-    const user = dto.email
-      ? await this.consultantService.findOneByEmail(dto.email)
-      : await this.consultantService.findOneByUsername(dto.username);
+    const { inEmail, inUsername, inPassword } = dto;
+    const user = inEmail
+      ? await this.consultantService.findOneByEmail(inEmail)
+      : await this.consultantService.findOneByUsername(inUsername);
 
     if (!user) {
       throw new HttpException('User not found', 400);
     }
 
-    const checkPassword = await bcrypt.compare(dto.password, user.password);
+    const { email, username, password, firstName, middleName, lastName } = user;
+    const checkPassword = await bcrypt.compare(inPassword, password);
 
     if (!checkPassword) {
       throw new HttpException('Password is incorrect', 400);
@@ -79,11 +66,11 @@ export class ConsultantController {
 
     return {
       data: {
-        email: user.email,
-        username: user.username,
-        firstName: user.firstName,
-        middleName: user.middleName,
-        lastName: user.lastName,
+        email,
+        username,
+        firstName,
+        middleName,
+        lastName,
       },
       token,
     };
