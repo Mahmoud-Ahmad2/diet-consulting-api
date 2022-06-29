@@ -21,7 +21,7 @@ export class AnswerController {
     @Request() req,
     @Body() answerDto: AnswerDto,
     @Param('questionId') questionId: number,
-  ): Promise<any> {
+  ): Promise<object> {
     const { userId } = req;
     const answer = await this.answerService.findAnswerByConsultantId(
       userId,
@@ -38,5 +38,27 @@ export class AnswerController {
       description,
       recommendations,
     );
+  }
+
+  @Post('addAnswer/:questionId')
+  async addAnswer(
+    @Request() req,
+    @Param('questionId') questionId: number,
+  ): Promise<object> {
+    const { userId } = req;
+    const answer = await this.answerService.findAnswerByConsultantId(
+      userId,
+      questionId,
+    );
+
+    if (!answer.isDraft) {
+      throw new HttpException('Already answered', 400);
+    }
+
+    await this.answerService.addAnswer(userId, questionId);
+
+    return {
+      message: 'Successfully answered',
+    };
   }
 }

@@ -1,17 +1,13 @@
 import {
-  Body,
   Controller,
   Get,
   HttpException,
   Param,
-  Post,
   Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
-import { QuestionDto } from './question.dto';
-import { verifyToken } from '../utils';
 import { Question } from './question.model';
 import { AuthGuard } from 'src/common/guard/question.guard';
 

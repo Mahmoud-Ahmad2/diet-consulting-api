@@ -36,4 +36,14 @@ export class AnswerService {
       },
     });
   }
+
+  async addAnswer(
+    consultantId: number,
+    questionId: number,
+  ): Promise<Array<number>> {
+    return await this.answerRepository.update(
+      { isDraft: false },
+      { where: { consultantId, questionId } },
+    );
+  }
 }
