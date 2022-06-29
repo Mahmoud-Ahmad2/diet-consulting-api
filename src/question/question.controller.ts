@@ -17,9 +17,13 @@ export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
   @Get()
-  async getAllQuestions(@Query('page') page: number): Promise<Question[]> {
+  async getAllQuestions(
+    @Request() req,
+    @Query('page') page: number,
+  ): Promise<Question[]> {
+    const { userId } = req;
     const offset = (page - 1) * 3;
-    return await this.questionService.findAll(offset);
+    return await this.questionService.findAll(offset, userId);
   }
 
   @Get('/:id')

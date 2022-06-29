@@ -3,6 +3,7 @@ import {
   Controller,
   HttpException,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -40,7 +41,7 @@ export class AnswerController {
     );
   }
 
-  @Post('addAnswer/:questionId')
+  @Patch('addAnswer/:questionId')
   async addAnswer(
     @Request() req,
     @Param('questionId') questionId: number,

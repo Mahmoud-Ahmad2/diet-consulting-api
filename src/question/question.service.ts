@@ -12,7 +12,7 @@ export class QuestionService {
     private readonly questionRepository: typeof Question,
   ) {}
 
-  async findAll(offset: number): Promise<Question[]> {
+  async findAll(offset: number, consultantId: number): Promise<Question[]> {
     return await this.questionRepository.findAll({
       attributes: ['id', 'question'],
       include: [
@@ -20,13 +20,24 @@ export class QuestionService {
           model: Answer,
           attributes: [
             'id',
-            // 'questionId',
-            // 'title',
-            // 'description',
-            // 'recommendations',
+            'questionId',
+            'title',
+            'description',
+            'recommendations',
+            'isDraft',
+            'consultantId',
+            'createdAt',
           ],
-          // order: [[sequelize.fn('COUNT', sequelize.col('answers.id')), 'ASC']],
-          // duplicating: false,
+          where: {
+            [Op.or]: [
+              {
+                isDraft: false,
+              },
+              {
+                consultantId,
+              },
+            ],
+          },
           as: 'answers',
           required: false,
         },
@@ -36,8 +47,8 @@ export class QuestionService {
       ],
       group: ['question.id', 'answers.id'],
       subQuery: false,
-      // limit: 3,
-      // offset,
+      limit: 3,
+      offset,
     });
   }
 
@@ -46,6 +57,7 @@ export class QuestionService {
     consultantId: number,
   ): Promise<Question> {
     return await this.questionRepository.findOne({
+      attributes: ['id', 'question', 'createdAt'],
       where: {
         id: questionId,
       },
@@ -72,6 +84,8 @@ export class QuestionService {
               },
             ],
           },
+          required: false,
+          as: 'answers',
         },
       ],
     });
