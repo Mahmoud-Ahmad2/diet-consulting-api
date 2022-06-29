@@ -7,13 +7,16 @@ import {
   Post,
   Query,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDto } from './question.dto';
 import { verifyToken } from '../utils';
 import { Question } from './question.model';
+import { AuthGuard } from 'src/common/guard/question.guard';
 
 @Controller('questions')
+@UseGuards(AuthGuard)
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
@@ -24,7 +27,11 @@ export class QuestionController {
   }
 
   @Get('/:id')
-  async getQuestions(@Param('id') id: number): Promise<Question> {
-    return await this.questionService.findOneByQuestionId(id);
+  async getQuestions(
+    @Request() req,
+    @Param('id') id: number,
+  ): Promise<Question> {
+    const { userId } = req;
+    return await this.questionService.findOneByQuestionId(id, userId);
   }
 }

@@ -3,6 +3,7 @@ import { Question } from './question.model';
 import { QUESTION_REPOSITORY } from 'src/common/constant';
 import { Answer } from 'src/answer/answer.model';
 import sequelize from 'sequelize';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class QuestionService {
@@ -40,12 +41,39 @@ export class QuestionService {
     });
   }
 
-  async findOneByQuestionId(id: number): Promise<Question> {
+  async findOneByQuestionId(
+    questionId: number,
+    consultantId: number,
+  ): Promise<Question> {
     return await this.questionRepository.findOne({
       where: {
-        id,
+        id: questionId,
       },
-      include: [{ model: Answer }],
+      include: [
+        {
+          model: Answer,
+          attributes: [
+            'id',
+            'questionId',
+            'consultantId',
+            'title',
+            'description',
+            'recommendations',
+            'isDraft',
+            'createdAt',
+          ],
+          where: {
+            [Op.or]: [
+              {
+                isDraft: false,
+              },
+              {
+                consultantId,
+              },
+            ],
+          },
+        },
+      ],
     });
   }
 }
