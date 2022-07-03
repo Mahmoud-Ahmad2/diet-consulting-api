@@ -1,0 +1,45 @@
+type consultant {
+id: Int
+email: String
+username: String
+password: String
+firstName: String
+lastName: String
+middleName: String
+createdAt: DateTime
+updatedAt: DateTime
+}
+
+
+type Question {
+  id: Int
+  question: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  answers: [Answer]
+}
+
+type Answer {
+  id: Int
+  questionId: Int
+  consultantId: Int
+  title: String
+  description: String
+  recommendation: String
+  isDraft: Boolean
+  question: Question
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Query {
+  findAllQuestions(offset: Int, consultantId: ID): [Question]
+  findOneByQuestionId(questionId: ID, consultantId: ID): [Question]
+}
+
+type Mutation {
+  signup(email: String, username: String, password: String, firstName: String, lastName: String, middleName: String): [consultant]
+  login(email:String, username: String, password: String): [consultant]
+  addDraft(questionId: ID, consultantId: ID, title: String, description: String, recommendation: String): [Answer]
+  addAnswer(questionId: ID, consultantId: ID): [Answer]
+}
