@@ -1,15 +1,17 @@
 import { Body, Controller, HttpException, Post } from '@nestjs/common';
-import { ConsultantService } from './consultant.service';
-import { SignupConsultantDto } from './signupConsultant.dto';
-import { LoginDto } from './login.dto';
+import { ConsultantService } from '../service/consultant.service';
+import { SignupConsultantDto } from '../dto/signupConsultant.dto';
+import { LoginDto } from '../dto/login.dto';
 import * as bcrypt from 'bcrypt';
-import { createToken } from '../utils';
+import { createToken } from '../../common/utils';
+import { Public } from 'src/common/decoretor/public.decorator';
 
 @Controller('consultant')
 export class ConsultantController {
   constructor(private readonly consultantService: ConsultantService) {}
 
   @Post('signup')
+  @Public()
   async insert(@Body() dto: SignupConsultantDto): Promise<object> {
     const { email, username, password, firstName, middleName, lastName } = dto;
     const findEmail = await this.consultantService.findOneByEmail(email);
@@ -45,6 +47,7 @@ export class ConsultantController {
   }
 
   @Post('login')
+  @Public()
   async login(@Body() dto: LoginDto): Promise<object> {
     const { inEmail, inUsername, inPassword } = dto;
     const user = inEmail

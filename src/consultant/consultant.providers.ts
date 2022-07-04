@@ -1,9 +1,9 @@
-import { Consultants } from './consultant.model';
-import { CONSULTANT_REPOSITORY } from '../common/constant';
+import { Consultants } from './model/consultant.model';
+import { providersEnum } from '../common/constant';
 
-export const ConsultantProviders = [
+export const consultantProviders = [
   {
-    provide: CONSULTANT_REPOSITORY,
+    provide: providersEnum.CONSULTANT_REPOSITORY,
     useValue: Consultants,
   },
 ];

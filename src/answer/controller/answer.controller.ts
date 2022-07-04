@@ -5,27 +5,24 @@ import {
   Param,
   Patch,
   Post,
-  Request,
-  UseGuards,
 } from '@nestjs/common';
-import { AnswerService } from './answer.service';
-import { AnswerDto } from './answer.dto';
-import { AuthGuard } from 'src/common/guard/question.guard';
+import { AnswerService } from '../service/answer.service';
+import { AnswerDto } from '../dto/answer.dto';
+import { User } from 'src/common/decoretor/user.decorator';
 
 @Controller('answer')
-@UseGuards(AuthGuard)
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
 
   @Post('addDraft/:questionId')
   async addDraft(
-    @Request() req,
+    @User() user,
     @Body() answerDto: AnswerDto,
     @Param('questionId') questionId: number,
   ): Promise<object> {
-    const { userId } = req;
+    const { id } = user;
     const answer = await this.answerService.findAnswerByConsultantId(
-      userId,
+      id,
       questionId,
     );
     if (answer) {
@@ -34,7 +31,7 @@ export class AnswerController {
     const { title, description, recommendations } = answerDto;
     return await this.answerService.addDraft(
       questionId,
-      userId,
+      id,
       title,
       description,
       recommendations,
@@ -43,12 +40,12 @@ export class AnswerController {
 
   @Patch('addAnswer/:questionId')
   async addAnswer(
-    @Request() req,
+    @User() user,
     @Param('questionId') questionId: number,
   ): Promise<object> {
-    const { userId } = req;
+    const { id } = user;
     const answer = await this.answerService.findAnswerByConsultantId(
-      userId,
+      id,
       questionId,
     );
 
@@ -56,7 +53,7 @@ export class AnswerController {
       throw new HttpException('Already answered', 400);
     }
 
-    await this.answerService.addAnswer(userId, questionId);
+    await this.answerService.addAnswer(id, questionId);
 
     return {
       message: 'Successfully answered',
