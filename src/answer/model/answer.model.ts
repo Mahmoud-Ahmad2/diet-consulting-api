@@ -39,7 +39,7 @@ export class Answer extends Model {
   @Column({ type: DataType.ARRAY(DataType.STRING), allowNull: false })
   recommendations: string[];
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  @Column({ type: DataType.BOOLEAN, defaultValue: true })
   isDraft: boolean;
 
   @BelongsTo(() => Question)
@@ -57,7 +57,7 @@ export class Answer extends Model {
   @Column({ type: DataType.INTEGER })
   deletedBy: number;
 
-  @Column({ type: DataType.INTEGER })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   createdBy: number;
 
   @Column({ type: DataType.INTEGER })

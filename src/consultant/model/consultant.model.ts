@@ -10,7 +10,6 @@ import {
 @Table({
   tableName: 'Consultants',
   underscored: true,
-  paranoid: true,
 })
 export class Consultants extends Model {
   @PrimaryKey
@@ -41,16 +40,4 @@ export class Consultants extends Model {
 
   @Column({ type: DataType.DATE })
   updatedAt: Date;
-
-  @Column({ type: DataType.DATE })
-  deletedAt: Date;
-
-  @Column({ type: DataType.INTEGER })
-  deletedBy: number;
-
-  @Column({ type: DataType.INTEGER })
-  createdBy: number;
-
-  @Column({ type: DataType.INTEGER })
-  updatedBy: number;
 }

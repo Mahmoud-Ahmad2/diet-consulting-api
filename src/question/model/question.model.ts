@@ -19,7 +19,7 @@ export class Question extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   question: string;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: true })
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
   isAnswered: boolean;
 
   @HasMany(() => Answer)
@@ -30,16 +30,4 @@ export class Question extends Model {
 
   @Column({ type: DataType.DATE })
   updatedAt: Date;
-
-  @Column({ type: DataType.DATE })
-  deletedAt: Date;
-
-  @Column({ type: DataType.INTEGER })
-  deletedBy: number;
-
-  @Column({ type: DataType.INTEGER })
-  createdBy: number;
-
-  @Column({ type: DataType.INTEGER })
-  updatedBy: number;
 }
