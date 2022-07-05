@@ -1,9 +1,9 @@
-import { Answer } from './answer.model';
-import { ANSWER_REPOSITORY } from '../common/constant';
+import { Answer } from './model/answer.model';
+import { providersEnum } from '../common/constant';
 
-export const AnswerProviders = [
+export const answerProviders = [
   {
-    provide: ANSWER_REPOSITORY,
+    provide: providersEnum.ANSWER_REPOSITORY,
     useValue: Answer,
   },
 ];

@@ -1,9 +1,9 @@
 import { Sequelize } from 'sequelize-typescript';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE_PROVIDE, DATABASE_CONFIG } from '../common/constant';
-import { Consultants } from '../consultant/consultant.model';
-import { Answer } from 'src/answer/answer.model';
-import { Question } from 'src/question/question.model';
+import { Consultants } from '../consultant/model/consultant.model';
+import { Answer } from 'src/answer/model/answer.model';
+import { Question } from 'src/question/model/question.model';
 
 export const databaseProviders = [
   {
