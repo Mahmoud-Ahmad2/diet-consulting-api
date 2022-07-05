@@ -5,10 +5,12 @@ import databaseConfig from 'config';
 import { ConsultantModule } from './consultant/consultant.module';
 import { QuestionModule } from './question/question.module';
 import { AnswerModule } from './answer/answer.module';
+import { VoteModule } from './vote/vote.module';
 
 @Module({
   imports: [
     ConsultantModule,
+    VoteModule,
     DatabaseModule,
     QuestionModule,
     AnswerModule,
