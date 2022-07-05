@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class AnswerDto {
   @IsNotEmpty()
@@ -10,6 +10,6 @@ export class AnswerDto {
   description: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsArray()
   recommendations: string;
 }

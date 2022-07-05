@@ -1,10 +1,9 @@
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ConsultantService } from '../service/consultant.service';
 import { SignupConsultantDto } from '../dto/signupConsultant.dto';
 import { LoginDto } from '../dto/login.dto';
-import * as bcrypt from 'bcrypt';
-import { createToken } from '../../common/utils';
-import { Public } from 'src/common/decoretor/public.decorator';
+import { Public } from 'src/common/decorator/public.decorator';
+import { Consultants } from '../model/consultant.model';
 
 @Controller('consultant')
 export class ConsultantController {
@@ -12,70 +11,22 @@ export class ConsultantController {
 
   @Post('signup')
   @Public()
-  async insert(@Body() dto: SignupConsultantDto): Promise<object> {
+  insert(@Body() dto: SignupConsultantDto): Promise<Consultants> {
     const { email, username, password, firstName, middleName, lastName } = dto;
-    const findEmail = await this.consultantService.findOneByEmail(email);
-    const findUsername = await this.consultantService.findOneByUsername(
-      dto.username,
-    );
-
-    if (findEmail && findUsername) {
-      throw new HttpException('Email and Username already exists', 400);
-    }
-
-    if (findEmail) {
-      throw new HttpException('Email already exists', 400);
-    }
-
-    if (findUsername) {
-      throw new HttpException('Username already exists', 400);
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const data = await this.consultantService.insert(
+    return this.consultantService.signup(
       email,
-      hashedPassword,
+      password,
       username,
       firstName,
       middleName,
       lastName,
     );
-    return {
-      message: 'User created successfully',
-      data,
-    };
   }
 
   @Post('login')
   @Public()
-  async login(@Body() dto: LoginDto): Promise<object> {
+  login(@Body() dto: LoginDto): Promise<object> {
     const { inEmail, inUsername, inPassword } = dto;
-    const user = inEmail
-      ? await this.consultantService.findOneByEmail(inEmail)
-      : await this.consultantService.findOneByUsername(inUsername);
-
-    if (!user) {
-      throw new HttpException('User not found', 400);
-    }
-
-    const { email, username, password, firstName, middleName, lastName } = user;
-    const checkPassword = await bcrypt.compare(inPassword, password);
-
-    if (!checkPassword) {
-      throw new HttpException('Password is incorrect', 400);
-    }
-
-    const token = await createToken(user.id);
-
-    return {
-      data: {
-        email,
-        username,
-        firstName,
-        middleName,
-        lastName,
-      },
-      token,
-    };
+    return this.consultantService.login(inEmail, inUsername, inPassword);
   }
 }

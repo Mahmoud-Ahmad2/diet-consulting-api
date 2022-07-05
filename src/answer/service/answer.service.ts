@@ -18,6 +18,7 @@ export class AnswerService {
     return await this.answerRepository.create({
       questionId,
       consultantId,
+      createdBy: consultantId,
       title,
       description,
       recommendations,
