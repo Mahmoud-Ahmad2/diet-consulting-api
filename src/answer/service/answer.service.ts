@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Answer } from '../model/answer.model';
 import { providersEnum } from 'src/common/constant';
 
@@ -14,7 +14,24 @@ export class AnswerService {
     title: string,
     description: string,
     recommendations: string,
-  ): Promise<Answer> {
+  ): Promise<object> {
+    const answer = await this.answerRepository.findOne({
+      where: {
+        consultantId,
+        questionId,
+      },
+    });
+
+    if (answer) {
+      return await this.answerRepository.update(
+        {
+          title,
+          description,
+          recommendations,
+        },
+        { where: { consultantId, questionId } },
+      );
+    }
     return await this.answerRepository.create({
       questionId,
       consultantId,
@@ -42,9 +59,32 @@ export class AnswerService {
     consultantId: number,
     questionId: number,
   ): Promise<Array<number>> {
+    const answer = await this.findAnswerByConsultantId(
+      consultantId,
+      questionId,
+    );
+
+    if (!answer.isDraft) {
+      throw new HttpException('Already answered', 400);
+    }
+
     return await this.answerRepository.update(
       { isDraft: false },
       { where: { consultantId, questionId } },
     );
+  }
+
+  async deleteAnswer(
+    consultantId: number,
+    questionId: number,
+    answerId: number,
+  ): Promise<number> {
+    return await this.answerRepository.destroy({
+      where: {
+        consultantId,
+        questionId,
+        id: answerId,
+      },
+    });
   }
 }

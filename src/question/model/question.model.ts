@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Answer } from 'src/answer/model/answer.model';
 
-@Table
+@Table({ tableName: 'Questions', underscored: true })
 export class Question extends Model {
   @PrimaryKey
   @AutoIncrement

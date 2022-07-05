@@ -5,13 +5,13 @@ import {
   Query,
   Post,
   Body,
-  HttpException,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { QuestionService } from '../service/question.service';
 import { Question } from '../model/question.model';
 import { User } from '../../common/decorator/user.decorator';
-import { AnswerDto } from '../../answer/dto/answer.dto';
+import { AnswerDto } from '../dto/answer.dto';
 import { AnswerService } from 'src/answer/service/answer.service';
 
 @Controller('questions')
@@ -44,13 +44,6 @@ export class QuestionController {
     @Param('questionId') questionId: number,
   ): Promise<object> {
     const { id } = user;
-    const answer = await this.answerService.findAnswerByConsultantId(
-      id,
-      questionId,
-    );
-    if (answer) {
-      throw new HttpException('Already answered', 400);
-    }
     const { title, description, recommendations } = answerDto;
     return await this.answerService.addDraft(
       questionId,
@@ -67,19 +60,24 @@ export class QuestionController {
     @Param('questionId') questionId: number,
   ): Promise<object> {
     const { id } = user;
-    const answer = await this.answerService.findAnswerByConsultantId(
-      id,
-      questionId,
-    );
-
-    if (!answer.isDraft) {
-      throw new HttpException('Already answered', 400);
-    }
-
     await this.answerService.addAnswer(id, questionId);
-
+    await this.questionService.changeIsAnsweredToTrue(questionId);
     return {
-      message: 'Successfully answered',
+      message: 'Answer added successfully',
+    };
+  }
+
+  @Delete('/:questionId/:answerId/answer')
+  async deleteAnswer(
+    @User() user,
+    @Param('questionId') questionId: number,
+    @Param('answerId') answerId: number,
+  ): Promise<object> {
+    const { id } = user;
+    await this.answerService.deleteAnswer(id, questionId, answerId);
+    await this.questionService.checkIsAnswered(questionId);
+    return {
+      message: 'Answer deleted successfully',
     };
   }
 }
