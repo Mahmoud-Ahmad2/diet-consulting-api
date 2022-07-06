@@ -7,27 +7,27 @@ import {
   AutoIncrement,
   DataType,
 } from 'sequelize-typescript';
-import { Answer } from 'src/answer/model/answer.model';
+import { Answer } from '../../answer/model/answer.model';
 
 @Table({ tableName: 'Questions', underscored: true })
 export class Question extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   question: string;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  @Column(DataType.BOOLEAN)
   isAnswered: boolean;
 
   @HasMany(() => Answer)
   answers: Answer[];
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   updatedAt: Date;
 }

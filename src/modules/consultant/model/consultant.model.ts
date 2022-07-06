@@ -14,30 +14,30 @@ import {
 export class Consultants extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   email: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   username: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   password: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   firstName: string;
 
-  @Column({ type: DataType.STRING })
+  @Column(DataType.STRING)
   middleName: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   lastName: string;
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   updatedAt: Date;
 }

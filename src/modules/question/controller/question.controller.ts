@@ -10,9 +10,11 @@ import {
 } from '@nestjs/common';
 import { QuestionService } from '../service/question.service';
 import { Question } from '../model/question.model';
-import { User } from '../../common/decorator/user.decorator';
+import { User } from '../../../common/decorator/user.decorator';
 import { AnswerDto } from '../dto/answer.dto';
-import { AnswerService } from 'src/answer/service/answer.service';
+import { AnswerService } from 'src/modules/answer/service/answer.service';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
 
 @Controller('questions')
 export class QuestionController {

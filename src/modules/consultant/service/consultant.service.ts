@@ -1,13 +1,13 @@
 import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Consultants } from '../model/consultant.model';
-import { providersEnum } from '../../common/constant';
+import { providersEnum } from '../../../common/constant';
 import * as bcrypt from 'bcrypt';
-import { createToken } from '../../common/utils';
+import { createToken } from '../../../common/utils';
 
 @Injectable()
 export class ConsultantService {
   constructor(
-    @Inject(providersEnum.CONSULTANT_REPOSITORY)
+    @Inject(providersEnum.CONSULTANT_PROVIDER)
     private readonly consultantRepository: typeof Consultants,
   ) {}
 

@@ -1,13 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Question } from '../model/question.model';
 import { providersEnum } from 'src/common/constant';
-import { Answer } from 'src/answer/model/answer.model';
+import { Answer } from '../../answer/model/answer.model';
 import { Op } from 'sequelize';
 
 @Injectable()
 export class QuestionService {
   constructor(
-    @Inject(providersEnum.QUESTION_REPOSITORY)
+    @Inject(providersEnum.QUESTION_PROVIDER)
     private readonly questionRepository: typeof Question,
   ) {}
 

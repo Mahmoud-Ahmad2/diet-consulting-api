@@ -5,7 +5,7 @@ import { providersEnum } from 'src/common/constant';
 @Injectable()
 export class VoteService {
   constructor(
-    @Inject(providersEnum.VOTE_REPOSITORY)
+    @Inject(providersEnum.VOTE_PROVIDER)
     private readonly voteRepository: typeof Vote,
   ) {}
   async createVote(

@@ -7,30 +7,30 @@ import {
   DataType,
   ForeignKey,
 } from 'sequelize-typescript';
-import { Consultants } from 'src/consultant/model/consultant.model';
-import { Answer } from 'src/answer/model/answer.model';
+import { Consultants } from '../../consultant/model/consultant.model';
+import { Answer } from '../../answer/model/answer.model';
 
 @Table({ tableName: 'Votes', underscored: true })
 export class Vote extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id: number;
 
   @ForeignKey(() => Consultants)
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column(DataType.INTEGER)
   consultantId;
 
   @ForeignKey(() => Answer)
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column(DataType.INTEGER)
   answerId;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column(DataType.STRING)
   vote: string;
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   createdAt: Date;
 
-  @Column({ type: DataType.DATE })
+  @Column(DataType.DATE)
   updatedAt: Date;
 }

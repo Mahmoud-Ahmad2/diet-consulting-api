@@ -5,7 +5,7 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { REGEX_PASSWORD } from '../../common/constant';
+import { REGEX_PASSWORD } from '../../../common/constant';
 
 export class LoginDto {
   @IsEmail()

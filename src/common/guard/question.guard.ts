@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { verifyToken } from 'src/common/utils';
-import { ConsultantService } from '../../consultant/service/consultant.service';
+import { ConsultantService } from '../../modules/consultant/service/consultant.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

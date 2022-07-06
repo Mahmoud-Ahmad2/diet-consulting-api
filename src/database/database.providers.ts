@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize-typescript';
 import { ConfigService } from '@nestjs/config';
 import { DATABASE_PROVIDE, DATABASE_CONFIG } from '../common/constant';
-import { Consultants } from '../consultant/model/consultant.model';
-import { Answer } from 'src/answer/model/answer.model';
-import { Question } from 'src/question/model/question.model';
-import { Vote } from 'src/vote/model/vote.model';
+import { Consultants } from '../modules/consultant/model/consultant.model';
+import { Answer } from '../modules/answer/model/answer.model';
+import { Question } from '../modules/question/model/question.model';
+import { Vote } from '../modules/vote/model/vote.model';
 
 export const databaseProviders = [
   {

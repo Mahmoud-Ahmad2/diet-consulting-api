@@ -5,7 +5,7 @@ import { providersEnum } from 'src/common/constant';
 @Injectable()
 export class AnswerService {
   constructor(
-    @Inject(providersEnum.ANSWER_REPOSITORY)
+    @Inject(providersEnum.ANSWER_PROVIDER)
     private readonly answerRepository: typeof Answer,
   ) {}
   async addDraft(

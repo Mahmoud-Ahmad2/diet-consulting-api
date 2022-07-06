@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import databaseConfig from 'config';
-import { ConsultantModule } from './consultant/consultant.module';
-import { QuestionModule } from './question/question.module';
-import { AnswerModule } from './answer/answer.module';
-import { VoteModule } from './vote/vote.module';
+import { ConsultantModule } from './modules/consultant/consultant.module';
+import { QuestionModule } from './modules/question/question.module';
+import { AnswerModule } from './modules/answer/answer.module';
+import { VoteModule } from './modules/vote/vote.module';
 
 @Module({
   imports: [
