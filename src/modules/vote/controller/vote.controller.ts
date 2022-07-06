@@ -3,11 +3,14 @@ import { VoteService } from '../service/vote.service';
 import { User } from 'src/common/decorator/user.decorator';
 import { Vote } from '../model/vote.model';
 import { VoteDto } from '../dto/vote.dto';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
 
 @Controller('votes')
 export class VoteController {
   constructor(private readonly voteService: VoteService) {}
 
+  @Roles(Role.User)
   @Post('/:answerId')
   async create(
     @User() user,

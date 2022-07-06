@@ -23,6 +23,7 @@ export class QuestionController {
     private readonly answerService: AnswerService,
   ) {}
 
+  @Roles(Role.User)
   @Get()
   async getAllQuestions(
     @User() user,
@@ -33,12 +34,14 @@ export class QuestionController {
     return await this.questionService.findAll(offset, id);
   }
 
+  @Roles(Role.User)
   @Get('/:id')
   async getQuestions(@User() user, @Param('id') id: number): Promise<Question> {
     const { id: userId } = user;
     return await this.questionService.findOneByQuestionId(id, userId);
   }
 
+  @Roles(Role.User)
   @Post('/:questionId/answer')
   async addDraft(
     @User() user,
@@ -56,6 +59,7 @@ export class QuestionController {
     );
   }
 
+  @Roles(Role.User)
   @Patch('/:questionId/answer')
   async addAnswer(
     @User() user,
@@ -69,6 +73,7 @@ export class QuestionController {
     };
   }
 
+  @Roles(Role.User)
   @Delete('/:questionId/:answerId/answer')
   async deleteAnswer(
     @User() user,
