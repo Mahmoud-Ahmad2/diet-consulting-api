@@ -35,7 +35,10 @@ export class AuthGuard implements CanActivate {
       const { id } = verify as any;
 
       if (id) {
-        const consultant = await this.consultantService.findOneByUserId(id);
+        const consultant: any = await this.consultantService.findOneByUserId(
+          id,
+        );
+        consultant.roles = 'user';
         request.user = consultant;
         return true;
       }
