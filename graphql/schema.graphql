@@ -1,45 +1,90 @@
-type consultant {
-id: Int
-email: String
-username: String
-password: String
-firstName: String
-lastName: String
+interface Node {
+  id: ID!
+}
+
+type Consultant implements Node {
+id: ID!
+email: String!
+username: String!
+password: String!
+firstName: String!
+lastName: String!
 middleName: String
-createdAt: DateTime
-updatedAt: DateTime
+createdAt: DateTime!
+updatedAt: DateTime!
 }
 
 
-type Question {
-  id: Int
-  question: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  answers: [Answer]
+type Question implements Node {
+  id: ID!
+  question: String!
+  isAnswered: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-type Answer {
-  id: Int
-  questionId: Int
-  consultantId: Int
-  title: String
-  description: String
-  recommendation: String
-  isDraft: Boolean
-  question: Question
-  createdAt: DateTime
-  updatedAt: DateTime
+type Answer implements Node {
+  id: ID!
+  questionId: ID!
+  consultantId: ID!
+  title: String!
+  description: String!
+  recommendation: String!
+  isDraft: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  deletedBy: ID
+  createdBy: ID!
+  updatedBy: ID
+}
+
+type Vote implements Node {
+  id: ID!
+  answerId: ID!
+  consultantId: ID!
+  vote: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
-  findAllQuestions(offset: Int, consultantId: ID): [Question]
-  findOneByQuestionId(questionId: ID, consultantId: ID): [Question]
+  questions(offset: Int): [Question!]
+  question(questionId: ID): Question!
 }
 
 type Mutation {
-  signup(email: String, username: String, password: String, firstName: String, lastName: String, middleName: String): [consultant]
-  login(email:String, username: String, password: String): [consultant]
-  addDraft(questionId: ID, consultantId: ID, title: String, description: String, recommendation: String): [Answer]
-  addAnswer(questionId: ID, consultantId: ID): [Answer]
+  consultantCreate(
+  email: String!, 
+  username: String!, 
+  password: String!, 
+  firstName: String!, 
+  lastName: String!, 
+  middleName: String
+  ): Consultant
+
+  consultantLogin(
+  email:String, 
+  username: String, 
+  password: String!
+  ): Consultant
+
+  answerDraftCreate(
+  questionId: ID!, 
+  title: String!, 
+  description: String!, 
+  recommendation: String!
+  ): Answer
+
+  answerCreate(questionId: ID!): Answer
+
+  answerDelete(
+  answerId: ID!,
+  questionId: ID!
+  ): Answer
+
+  voteCreate(
+  answerId: ID!,
+  vote: String!
+  ): vote
 }
