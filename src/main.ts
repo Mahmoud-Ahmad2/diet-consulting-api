@@ -1,12 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { AuthGuard } from './common/guard/question.guard';
-import { ConsultantService } from './consultant/service/consultant.service';
+import { AuthGuard } from './common/guard/auth.guard';
+import { ConsultantService } from './modules/consultant/service/consultant.service';
 import { Reflector } from '@nestjs/core';
+import { RolesGuard } from './common/guard/roles.guard';
+import { Logger } from './common/logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new Logger(),
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -15,6 +19,7 @@ async function bootstrap() {
   );
   app.useGlobalGuards(
     new AuthGuard(new Reflector(), app.get(ConsultantService)),
+    new RolesGuard(new Reflector()),
   );
   await app.listen(3000);
 }
